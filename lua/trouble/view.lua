@@ -316,7 +316,7 @@ function View:focus()
 end
 
 function View.switch_to(win, buf)
-  if win then
+  if win and vim.api.nvim_win_is_valid(win) then
     vim.api.nvim_set_current_win(win)
     if buf then
       vim.api.nvim_win_set_buf(win, buf)
@@ -331,6 +331,7 @@ end
 
 function View:close()
   util.debug("close")
+  self:switch_to_parent()
   if vim.api.nvim_win_is_valid(self.win) then
     vim.api.nvim_win_close(self.win, {})
   end
